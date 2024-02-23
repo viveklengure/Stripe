@@ -1,0 +1,23 @@
+with cte AS 
+(select substr(p.date, 1,4) as year, 
+substr(p.date, 1,7) as month, 
+substr(p.date,1,10) as date,  
+p.platform_id, 
+p.recipient_id, 
+p.count, 
+p.amount, 
+ROUND(p.amount/100,4) as amount_USD, 
+c.country as country_platform, 
+c1.country as country_recipient,
+i.industry
+from payouts p
+join countries c
+on p.platform_id = c.merchant_id
+join countries c1
+on p.recipient_id = c1.merchant_id
+join industries i
+on p.platform_id = i.merchant_id
+where substr(p.date, 1,7) in ('2018-10', '2018-11','2018-12'))
+select country_platform, ROUND(avg(amount),2) as avg_payout_country
+from cte
+group by country_platform
