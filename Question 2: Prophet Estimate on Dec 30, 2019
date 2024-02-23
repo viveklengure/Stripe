@@ -1,0 +1,61 @@
+
+import pandas as pd
+from prophet import Prophet
+
+# Load your dataset
+df = pd.read_csv('aggregated_data_country_industry.csv')
+
+# Drop missing values and reset index
+df.dropna(inplace=True)
+# df.reset_index(drop=True, inplace=True)
+
+# Convert 'date' column to datetime
+df['date'] = pd.to_datetime(df['date'])
+
+# Separate data for each industry
+industries = df['industry'].unique()
+
+# # HERE -
+# # List of industries to filter by
+# industries_to_filter = ['Education', 'hotels, restaurants & leisure','Food & Beverage']
+
+# # Filter the DataFrame for multiple countries
+# df_industries = df[df['industry'].isin(industries_to_filter)]
+# # HERE -
+
+for industry in industries:
+    # Filter data for the current country
+    industry_df = df[df['industry'] == industry]
+    
+    # Check if there are at least two non-NaN rows for the current country
+#     if industry_df.dropna().shape[0] < 2:
+#         print(f"Not enough data for {industry}. Skipping...")
+#         continue
+    
+    # Prepare DataFrame for Prophet
+    industry_df = industry_df[['date', 'amount']]
+    industry_df.columns = ['ds', 'y']
+    
+    # Train-test split
+    train = industry_df.iloc[:len(industry_df)-30]
+    test = industry_df.iloc[len(industry_df)-30:]
+    
+    # Check if there are at least two non-NaN rows for training
+#     if train.dropna().shape[0] < 2:
+#         print(f"Not enough training data for {industry}. Skipping...")
+#         continue
+    
+    # Train Prophet model
+    m = Prophet()
+    m.fit(train)
+    
+    # Make future DataFrame
+    future = m.make_future_dataframe(periods=364)  # MS for monthly, H for hourly
+    
+    # Make predictions
+    forecast = m.predict(future)
+    
+    # Print forecast for Jan 1, 2019
+    print(f"Forecast for {industry} on Dec 30, 2019:")
+    print(forecast[forecast['ds'] == '2019-12-30'][['ds', 'yhat', 'yhat_lower', 'yhat_upper']])
+    print("\n")
