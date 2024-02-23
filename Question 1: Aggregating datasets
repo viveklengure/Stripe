@@ -25,12 +25,13 @@ SELECT
 FROM payouts p
 JOIN countries c ON p.platform_id = c.merchant_id
 JOIN countries c1 ON p.recipient_id = c1.merchant_id
-JOIN industries i ON p.platform_id = i.merchant_id
+RIGHT JOIN industries i ON p.platform_id = i.merchant_id
+# Use JOIN if using SQLite
 ORDER BY c.country, substr(p.date, 1, 10)
 """
 
 # Execute the query using pysqldf function
-aggregated_data = pysqldf(aggregated_data_sql)
+aggregated_data = sqldf(aggregated_data_sql)
 
 # Exporting aggregating into a csv file
 aggregated_data.to_csv('aggregated_data_country_industry.csv')
