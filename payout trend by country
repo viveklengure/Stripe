@@ -24,10 +24,10 @@ SELECT
 FROM payouts p
 JOIN countries c ON p.platform_id = c.merchant_id
 JOIN countries c1 ON p.recipient_id = c1.merchant_id
-RIGHT JOIN industries i ON p.platform_id = i.merchant_id
-# Use JOIN if using SQLite
+JOIN industries i ON p.platform_id = i.merchant_id
 ORDER BY c.country, substr(p.date, 1, 10)
 """
+# NOTE: SQLite doesn't support right join but in an ideal scenario, Right join should be used when joining with countries and industries datasets
 
 # Execute the query using pysqldf function
 aggregated_data = sqldf(aggregated_data_sql)
