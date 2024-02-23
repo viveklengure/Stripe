@@ -2,12 +2,12 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from pandasql import sqldf
 
-# Load your datasets
+# Load datasets
 countries = pd.read_csv('countries.csv')
 industries = pd.read_csv('industries.csv')
 payouts = pd.read_csv('payouts.csv')
 
-# Your SQL query
+# SQL query
 aggregated_data_sql = """
 SELECT 
     substr(p.date, 1, 4) as year, 
