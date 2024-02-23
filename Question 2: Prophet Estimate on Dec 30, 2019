@@ -2,7 +2,7 @@
 import pandas as pd
 from prophet import Prophet
 
-# Load your dataset
+# Load dataset
 df = pd.read_csv('aggregated_data_country_industry.csv')
 
 # Drop missing values and reset index
@@ -27,11 +27,6 @@ for industry in industries:
     # Filter data for the current country
     industry_df = df[df['industry'] == industry]
     
-    # Check if there are at least two non-NaN rows for the current country
-#     if industry_df.dropna().shape[0] < 2:
-#         print(f"Not enough data for {industry}. Skipping...")
-#         continue
-    
     # Prepare DataFrame for Prophet
     industry_df = industry_df[['date', 'amount']]
     industry_df.columns = ['ds', 'y']
@@ -40,10 +35,6 @@ for industry in industries:
     train = industry_df.iloc[:len(industry_df)-30]
     test = industry_df.iloc[len(industry_df)-30:]
     
-    # Check if there are at least two non-NaN rows for training
-#     if train.dropna().shape[0] < 2:
-#         print(f"Not enough training data for {industry}. Skipping...")
-#         continue
     
     # Train Prophet model
     m = Prophet()
