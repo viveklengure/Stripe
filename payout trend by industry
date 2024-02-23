@@ -1,0 +1,22 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+payouts_df = pd.read_csv('aggregated_data_country_industry.csv')
+payouts_df['date'] = pd.to_datetime(payouts_df['date'])
+
+# Aggregate payouts by industry and date
+payouts_by_country_date = payouts_df.groupby(['industry', 'date']).sum()['amount'].reset_index()
+
+# Create a separate plot for each industry
+industries = payouts_by_country_date['industry'].unique()
+
+# Plot for each industry
+for industry in industries:
+    data_country = payouts_by_country_date[payouts_by_country_date['industry'] == industry]
+    plt.plot(data_country['date'], data_country['amount'], label=country)
+    # Add labels and legend
+    plt.xlabel('Date')
+    plt.ylabel('Amount')
+    plt.title('Amount vs. Country Over Time')
+    plt.legend()
+    plt.show()
+
