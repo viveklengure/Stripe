@@ -15,13 +15,13 @@ df['date'] = pd.to_datetime(df['date'])
 # Separate data for each industry
 industries = df['industry'].unique()
 
-# # HERE -
+
 # # List of industries to filter by
 # industries_to_filter = ['Education', 'hotels, restaurants & leisure','Food & Beverage']
 
 # # Filter the DataFrame for multiple countries
 # df_industries = df[df['industry'].isin(industries_to_filter)]
-# # HERE -
+
 
 for industry in industries:
     # Filter data for the current country
