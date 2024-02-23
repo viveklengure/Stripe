@@ -32,6 +32,7 @@ ORDER BY c.country, substr(p.date, 1, 10)
 
 # Execute the query using sqldf function
 aggregated_data = sqldf(aggregated_data_sql)
+aggregated_data.dropna(inplace=True)
 
 # Exporting aggregating into a csv file
 aggregated_data.to_csv('aggregated_data_country_industry.csv')
