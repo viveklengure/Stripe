@@ -13,9 +13,9 @@ i.industry
 from payouts p
 join countries c
 on p.platform_id = c.merchant_id
-join countries c1
+right join countries c1
 on p.recipient_id = c1.merchant_id
-join industries i
+right join industries i
 on p.platform_id = i.merchant_id
 where substr(p.date, 1,7) in ('2018-10', '2018-11','2018-12'))
 select country_platform, ROUND(avg(amount),2) as avg_payout_country
