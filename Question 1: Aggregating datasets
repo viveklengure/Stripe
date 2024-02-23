@@ -30,7 +30,7 @@ RIGHT JOIN industries i ON p.platform_id = i.merchant_id
 ORDER BY c.country, substr(p.date, 1, 10)
 """
 
-# Execute the query using pysqldf function
+# Execute the query using sqldf function
 aggregated_data = sqldf(aggregated_data_sql)
 
 # Exporting aggregating into a csv file
